@@ -1,0 +1,17 @@
+# Credentials & Secrets (CRITICAL SECURITY)
+.env
+.env.*
+serviceAccountKey.json
+*.pem
+*.key
+
+# Firebase local configurations & caches
+.firebase/
+# .firebaserc containing project mapping is checked in by default, but local cache is ignored
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
