@@ -187,8 +187,10 @@ document.addEventListener("DOMContentLoaded", () => {
  * ==========================================================================
  */
 function smartHeuristicLmsScraper() {
-  const extracted = [];
   const today = new Date();
+  const pastThreshold = new Date();
+  pastThreshold.setDate(pastThreshold.getDate() - 7); // Allow up to 7 days in the past to avoid strict timezone cutoff
+
   
   // Format Date to YYYY-MM-DD
   function formatDateString(date) {
@@ -304,7 +306,7 @@ function smartHeuristicLmsScraper() {
           }
         });
 
-        if (titleCell && dateValue && dateValue >= today) {
+        if (titleCell && dateValue && dateValue >= pastThreshold) {
           extracted.push({
             title: cleanTitle(titleCell),
             dueDate: formatDateString(dateValue),
@@ -324,7 +326,7 @@ function smartHeuristicLmsScraper() {
     const combinedText = text + " " + parentText;
     const parsedDate = extractDueDate(combinedText);
     
-    if (text.length > 3 && parsedDate && parsedDate >= today) {
+    if (text.length > 3 && parsedDate && parsedDate >= pastThreshold) {
       extracted.push({
         title: cleanTitle(text),
         dueDate: formatDateString(parsedDate),
@@ -350,7 +352,7 @@ function smartHeuristicLmsScraper() {
         if (header) title = header.innerText;
       }
 
-      if (parsedDate && parsedDate >= today && title !== "Tugas Kuliah") {
+      if (parsedDate && parsedDate >= pastThreshold && title !== "Tugas Kuliah") {
         extracted.push({
           title: cleanTitle(title),
           dueDate: formatDateString(parsedDate),
@@ -360,6 +362,40 @@ function smartHeuristicLmsScraper() {
       }
     }
   });
+
+  // Scraper Action: Fallback to Page-wide text sentence scanner if nothing found
+  if (extracted.length === 0) {
+    const textBlocks = document.querySelectorAll("h1, h2, h3, h4, p, li, .post, .message, .content, [class*='content'], [class*='body']");
+    textBlocks.forEach(block => {
+      const text = block.innerText || "";
+      if (text.length > 8 && text.length < 250) {
+        const hasTaskKeyword = /(tugas|kuis|quiz|assignment|praktikum|proyek|project|diskusi|forum|tenggat|deadline)/i.test(text);
+        if (hasTaskKeyword) {
+          const parsedDate = extractDueDate(text);
+          if (parsedDate && parsedDate >= pastThreshold) {
+            let courseName = "Portal LMS";
+            const titleEl = document.querySelector("h1, h2, .course-header, [class*='course-title']");
+            if (titleEl && titleEl.innerText.trim().length > 3) {
+              courseName = titleEl.innerText.split("-")[0].trim();
+            }
+            
+            // Extract a neat clean title from the first sentence or first few words
+            let cleanTitleText = cleanTitle(text.split(/[.:\n]/)[0]);
+            if (cleanTitleText.length > 80) {
+              cleanTitleText = cleanTitleText.substring(0, 80) + "...";
+            }
+            
+            extracted.push({
+              title: cleanTitleText,
+              dueDate: formatDateString(parsedDate),
+              courseName: courseName,
+              notes: "Diekstrak otomatis dari teks halaman forum/portal."
+            });
+          }
+        }
+      }
+    });
+  }
 
   // De-duplicate results by title and date to prevent spamming
   const uniqueTasks = [];
