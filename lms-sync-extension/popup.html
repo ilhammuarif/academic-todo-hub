@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    :root {
+      --bg-color: #0b0f19;
+      --card-bg: rgba(17, 24, 39, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --accent: #10b981;
+      --error: #ef4444;
+      --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      width: 380px;
+      margin: 0;
+      padding: 16px;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font);
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Glassmorphism card header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .header-text h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .header-text span {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Instructions & Detection status */
+    .status-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .badge-detecting {
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .badge-detected {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    /* Big Action Button */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--primary);
+      border: none;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+      width: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(139, 92, 246, 0.35);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      box-shadow: none;
+      margin-top: 8px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+    }
+
+    /* Scraped Tasks Preview Area */
+    .scraped-section {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 8px;
+    }
+
+    .task-list {
+      max-height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-right: 4px;
+    }
+
+    /* Custom scrollbar */
+    .task-list::-webkit-scrollbar {
+      width: 4px;
+    }
+    .task-list::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+
+    .task-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+    }
+
+    .task-item:hover {
+      border-color: rgba(139, 92, 246, 0.3);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .task-input-title {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 0;
+      width: 90%;
+    }
+
+    .task-input-title:focus {
+      outline: none;
+      border-bottom: 1px solid #8b5cf6;
+    }
+
+    .task-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .task-input-date {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      font-family: var(--font);
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .task-input-date:focus {
+      outline: none;
+    }
+
+    .task-delete {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 2px;
+    }
+
+    .task-delete:hover {
+      color: var(--error);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .footer-note {
+      font-size: 9px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-icon">🎓</div>
+      <div class="header-text">
+        <h3>AcademiFlow LMS Sync</h3>
+        <span>Penarik Tugas Otomatis</span>
+      </div>
+    </div>
+
+    <!-- Status / Scraper Controls -->
+    <div class="status-card">
+      <div id="detection-badge" class="status-badge badge-detecting">
+        🔍 Menganalisis Halaman...
+      </div>
+      <div id="status-message">
+        Silakan buka halaman daftar tugas, pengumuman, atau kalender di portal LMS kampus Anda untuk memulai pemindaian.
+      </div>
+    </div>
+
+    <!-- Trigger Scan Button -->
+    <button id="btn-scan" class="btn">
+      ⚡ Scan &amp; Ekstrak Tugas
+    </button>
+
+    <!-- Scraped Tasks Section -->
+    <div id="scraped-section" class="scraped-section">
+      <div class="section-title">Hasil Pemindaian (<span id="task-count">0</span>)</div>
+      
+      <div id="task-list" class="task-list">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <button id="btn-send" class="btn">
+        🚀 Kirim ke AcademiFlow
+      </button>
+    </div>
+
+    <button id="btn-open-app" class="btn btn-secondary">
+      🌐 Buka Web AcademiFlow
+    </button>
+
+    <div class="footer-note">
+      AcademiFlow Helper &copy; 2026. Data di-scrape langsung secara lokal &amp; aman.
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

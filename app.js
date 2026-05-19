@@ -214,6 +214,29 @@ const SoundSynth = {
       
       osc.start();
       osc.stop(this.ctx.currentTime + 1.3);
+    } else if (type === 'sync') {
+      // Pleasant double-ascending synthetic chime for successful syncing
+      const osc2 = this.ctx.createOscillator();
+      const gain2 = this.ctx.createGain();
+      osc2.connect(gain2);
+      gain2.connect(this.ctx.destination);
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(523.25, this.ctx.currentTime); // C5
+      osc.frequency.exponentialRampToValueAtTime(659.25, this.ctx.currentTime + 0.15); // E5
+      gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.4);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.45);
+
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(659.25, this.ctx.currentTime + 0.12); // E5
+      osc2.frequency.exponentialRampToValueAtTime(783.99, this.ctx.currentTime + 0.3); // G5
+      gain2.gain.setValueAtTime(0, this.ctx.currentTime);
+      gain2.gain.setValueAtTime(0.15, this.ctx.currentTime + 0.12);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.5);
+      osc2.start();
+      osc2.stop(this.ctx.currentTime + 0.55);
     }
   }
 };
@@ -1599,6 +1622,128 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
     reader.readAsText(file);
+  });
+
+  // 13.5 LMS SYNC SYSTEM EVENT HANDLERS
+  let lmsPendingSyncTasks = [];
+
+  // Listen to the custom DOM event emitted by the Chrome Extension
+  window.addEventListener('AcademiFlowLMSSync', (e) => {
+    try {
+      const scraped = e.detail;
+      if (!Array.isArray(scraped) || scraped.length === 0) return;
+
+      lmsPendingSyncTasks = scraped;
+      
+      // Play ascending chime sound for sync event
+      SoundSynth.playAlert('sync');
+
+      // Populate Modal Table rows
+      const tbody = document.getElementById('lms-tasks-tbody');
+      if (!tbody) return;
+
+      tbody.innerHTML = '';
+      
+      const activeCourses = state.courses.filter(c => c.semester === state.activeSemester);
+
+      scraped.forEach((task, idx) => {
+        // Find if any existing active course partially matches the scraped courseName
+        let matchedCourseId = 'none';
+        const scrapCourseLower = task.courseName ? task.courseName.toLowerCase() : '';
+        
+        for (const c of activeCourses) {
+          if (c.name.toLowerCase().includes(scrapCourseLower) || scrapCourseLower.includes(c.name.toLowerCase())) {
+            matchedCourseId = c.id;
+            break;
+          }
+        }
+
+        // Generate course options dynamically
+        let courseOptionsHTML = `<option value="none" ${matchedCourseId === 'none' ? 'selected' : ''}>Tidak Terikat (Umum)</option>`;
+        courseOptionsHTML += activeCourses.map(c => 
+          `<option value="${c.id}" ${c.id === matchedCourseId ? 'selected' : ''}>${escapeHTML(c.name)}</option>`
+        ).join('');
+
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid rgba(255, 255, 255, 0.05)';
+        tr.innerHTML = `
+          <td class="py-2 px-3">
+            <div style="font-weight: 600; color: var(--text-main);">${escapeHTML(task.title)}</div>
+            <div class="text-xs text-muted" style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHTML(task.notes)}</div>
+          </td>
+          <td class="py-2 px-2">
+            <select class="styled-input-dark w-100 lms-course-select" data-index="${idx}" style="font-size: 12px; padding: 4px 8px; border-radius: 6px;">
+              ${courseOptionsHTML}
+            </select>
+          </td>
+          <td class="py-2 px-2">
+            <input type="date" class="styled-input-dark w-100 lms-date-input" data-index="${idx}" value="${task.dueDate}" style="font-size: 12px; padding: 4px 8px; border-radius: 6px;">
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('lms-import-count').textContent = scraped.length;
+      document.getElementById('lms-sync-modal').classList.add('active');
+    } catch (err) {
+      console.error("LMS Sync Error:", err);
+    }
+  });
+
+  // Modal Close Controllers
+  document.getElementById('btn-close-lms-modal').addEventListener('click', () => {
+    document.getElementById('lms-sync-modal').classList.remove('active');
+  });
+  document.getElementById('btn-cancel-lms-modal').addEventListener('click', () => {
+    document.getElementById('lms-sync-modal').classList.remove('active');
+  });
+
+  // Confirm Sync Import Click Handler
+  document.getElementById('btn-confirm-lms-import').addEventListener('click', () => {
+    try {
+      if (!lmsPendingSyncTasks || lmsPendingSyncTasks.length === 0) return;
+
+      const courseSelects = document.querySelectorAll('.lms-course-select');
+      const dateInputs = document.querySelectorAll('.lms-date-input');
+
+      lmsPendingSyncTasks.forEach((task, idx) => {
+        const select = Array.from(courseSelects).find(s => parseInt(s.getAttribute('data-index')) === idx);
+        const dateInput = Array.from(dateInputs).find(d => parseInt(d.getAttribute('data-index')) === idx);
+        
+        const courseId = select ? select.value : 'none';
+        const dueDate = dateInput ? dateInput.value : task.dueDate;
+
+        // Insert new task into AcademiFlow database state
+        const newTask = {
+          id: "task_" + Date.now() + "_" + idx,
+          title: task.title,
+          courseId: courseId,
+          category: "Tugas",
+          dueDate: dueDate,
+          priority: "Medium",
+          notes: task.notes,
+          completed: false,
+          semester: state.activeSemester,
+          createdAt: new Date().toISOString()
+        };
+        state.tasks.push(newTask);
+      });
+
+      DB.save();
+      
+      // Close Modal & Sound Chime
+      document.getElementById('lms-sync-modal').classList.remove('active');
+      SoundSynth.playAlert('gong');
+
+      // Refresh UI Views instantly
+      renderTasksDeck();
+      updateDashboardStats();
+
+      alert(`Sukses mengimpor ${lmsPendingSyncTasks.length} tugas baru dari LMS Kampus!`);
+      lmsPendingSyncTasks = [];
+    } catch (err) {
+      console.error("Gagal melakukan impor tugas LMS:", err);
+    }
   });
 
   // 14. First Load Sync

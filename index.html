@@ -717,6 +717,26 @@
                   <input type="file" id="import-file-selector" class="hidden" accept=".json">
                 </div>
               </div>
+
+              <!-- LMS Sync Hub Configuration Card -->
+              <div class="setting-row flex-column align-items-start gap-3 border-top pt-4">
+                <div class="setting-label">
+                  <h4><i class="fa-solid fa-puzzle-piece text-accent"></i> LMS Sync Hub (Ekstensi Chrome)</h4>
+                  <p class="text-sm text-muted">Sinkronisasikan seluruh jadwal tugas dari portal universitas Anda langsung ke AcademiFlow dalam 1-klik menggunakan Ekstensi Google Chrome kustom.</p>
+                </div>
+                
+                <div class="security-info-box w-100 mb-0" style="background: rgba(139, 92, 246, 0.05); border: 1px solid rgba(139, 92, 246, 0.15);">
+                  <h5 class="text-accent mb-2" style="font-weight: 700;"><i class="fa-solid fa-circle-info"></i> Cara Memasang Ekstensi dalam 10 Detik:</h5>
+                  <ol class="text-xs text-muted flex-column gap-1 pl-3 mb-2" style="list-style-type: decimal; display: flex; flex-direction: column;">
+                    <li>Buka browser Chrome / Edge dan navigasikan ke alamat: <code class="text-accent">chrome://extensions</code></li>
+                    <li>Aktifkan tombol <b>Developer Mode</b> di pojok kanan atas halaman tersebut.</li>
+                    <li>Klik tombol <b>Load Unpacked</b> (Muat Ekstensi yang Belum Dikemas) di pojok kiri atas.</li>
+                    <li>Pilih folder <code class="text-accent">lms-sync-extension</code> yang berada di dalam folder proyek AcademiFlow Anda.</li>
+                    <li>Selesai! Buka portal kampus Anda, klik ikon ekstensi 🎓, dan tekan <b>Scan &amp; Kirim</b>.</li>
+                  </ol>
+                  <p class="text-xs text-muted mb-0"><i class="fa-solid fa-shield-halved text-success"></i> <b>Kepatuhan Keamanan</b>: Ekstensi ini 100% luring-first dan aman. Tidak mengirimkan sandi atau data kredensial Anda ke luar peranti Anda.</p>
+                </div>
+              </div>
               
               <!-- Security Alert Box -->
               <div class="security-info-box">
@@ -874,6 +894,42 @@
           <button type="submit" class="btn btn-primary btn-sm">Simpan Matkul</button>
         </div>
       </form>
+    </div>
+  </div>
+  
+  <!-- ========================================== -->
+  <!-- MODAL: LMS SYNC IMPORT -->
+  <!-- ========================================== -->
+  <div id="lms-sync-modal" class="modal">
+    <div class="modal-content glass-card animate-slide-down" style="max-width: 600px; width: 90%;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-cloud-arrow-down text-accent"></i> Impor Tugas dari LMS Kampus</h3>
+        <button id="btn-close-lms-modal" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <p class="text-sm text-muted mb-3">Berikut adalah daftar tugas akademik yang berhasil ditarik oleh Google Chrome Extension. Silakan sesuaikan mata kuliah dan prioritas sebelum menyimpan.</p>
+      
+      <div style="max-height: 280px; overflow-y: auto; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 4px;">
+        <table class="w-100 text-left text-sm" style="border-collapse: collapse; min-width: 500px;">
+          <thead>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-muted);">
+              <th class="py-2 px-3" style="width: 45%;">Agenda Tugas</th>
+              <th class="py-2 px-2" style="width: 35%;">Mata Kuliah Tujuan</th>
+              <th class="py-2 px-2" style="width: 20%;">Tenggat</th>
+            </tr>
+          </thead>
+          <tbody id="lms-tasks-tbody">
+            <!-- Dynamic rows will be inserted here -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" id="btn-cancel-lms-modal" class="btn btn-secondary btn-sm">Batal</button>
+        <button type="button" id="btn-confirm-lms-import" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-circle-check"></i> Simpan ke AcademiFlow (<span id="lms-import-count">0</span>)
+        </button>
+      </div>
     </div>
   </div>
   
