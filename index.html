@@ -1,89 +1,883 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
-
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/12.13.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/12.13.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/12.13.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/12.13.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/12.13.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/12.13.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/12.13.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/12.13.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/12.13.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/12.13.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AcademiFlow — Academic Todo Hub &amp; GPA Simulator</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+  
+  <div class="app-container">
+    <!-- ========================================== -->
+    <!-- SIDEBAR NAVIGATION -->
+    <!-- ========================================== -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <span class="logo-text">AcademiFlow</span>
+        </div>
+      </div>
+      
+      <!-- Student Profile Card -->
+      <div class="profile-card">
+        <div class="profile-avatar">
+          <i class="fa-solid fa-user-graduate"></i>
+        </div>
+        <div class="profile-info">
+          <h4>Ilham</h4>
+          <span id="current-semester-label" class="badge semester-badge">Semester 4</span>
+        </div>
+      </div>
+      
+      <!-- Navigation Menu -->
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <button class="nav-btn active" data-tab="dashboard">
+              <i class="fa-solid fa-chart-pie"></i> Dashboard Overview
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-tab="tasks">
+              <i class="fa-solid fa-list-check"></i> Agenda &amp; Tugas
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-tab="gpa">
+              <i class="fa-solid fa-graduation-cap"></i> Rencana Studi &amp; GPA
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-tab="skripsi">
+              <i class="fa-solid fa-book-bookmark"></i> Roadmap Skripsi
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-tab="pomodoro">
+              <i class="fa-solid fa-hourglass-half"></i> Focus Study Timer
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-tab="analytics">
+              <i class="fa-solid fa-chart-line"></i> Insight &amp; Statistik
+            </button>
+          </li>
+          <li>
+            <button class="nav-btn" data-tab="settings">
+              <i class="fa-solid fa-sliders"></i> Pengaturan
+            </button>
+          </li>
+        </ul>
+      </nav>
+      
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="quick-timer-mini" onclick="switchTab('pomodoro')">
+          <i class="fa-regular fa-clock"></i>
+          <span id="mini-timer-text">Focus Mode: Off</span>
+        </div>
+        <div class="footer-text">
+          <p>AcademiFlow v1.0 &copy; 2026</p>
+          <p class="text-xs">Offline-First Engine</p>
+        </div>
+      </div>
+    </aside>
+    
+    <!-- ========================================== -->
+    <!-- MAIN CONTENT PORT -->
+    <!-- ========================================== -->
+    <main class="main-content">
+      
+      <!-- Global Topbar Header -->
+      <header class="top-header">
+        <div>
+          <h1 id="view-title">Dashboard Overview</h1>
+          <p id="view-subtitle" class="text-muted">Ringkasan agenda kuliah, target kelulusan, dan progres milestone skripsi.</p>
+        </div>
+        
+        <div class="header-right">
+          <!-- Semester Selector dropdown -->
+          <div class="semester-selector-wrapper">
+            <i class="fa-solid fa-calendar-check"></i>
+            <select id="global-semester-select" class="styled-select">
+              <option value="1">Semester 1</option>
+              <option value="2">Semester 2</option>
+              <option value="3">Semester 3</option>
+              <option value="4" selected>Semester 4</option>
+              <option value="5">Semester 5</option>
+              <option value="6">Semester 6</option>
+              <option value="7">Semester 7</option>
+              <option value="8">Semester 8</option>
+            </select>
+          </div>
+          
+          <!-- Add task quick trigger -->
+          <button id="btn-quick-add" class="btn btn-primary btn-sm">
+            <i class="fa-solid fa-plus"></i> Tambah Tugas
+          </button>
+        </div>
+      </header>
+      
+      <!-- ========================================== -->
+      <!-- TAB VIEW 1: DASHBOARD -->
+      <!-- ========================================== -->
+      <div id="tab-dashboard" class="tab-content active">
+        <!-- Quick Stats Cards Grid -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon icon-tasks">
+              <i class="fa-solid fa-list-check"></i>
+            </div>
+            <div class="stat-details">
+              <span class="stat-title">Agenda Tugas Aktif</span>
+              <h2 id="dash-active-tasks">0</h2>
+              <span id="dash-due-soon" class="stat-sub text-error">0 Tenggat Pekan Ini</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon icon-gpa">
+              <i class="fa-solid fa-chart-simple"></i>
+            </div>
+            <div class="stat-details">
+              <span class="stat-title">Proyeksi IPK Akhir</span>
+              <h2 id="dash-target-gpa">0.00</h2>
+              <span id="dash-current-gpa" class="stat-sub text-accent">Target IPS Semester: 0.00</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon icon-thesis">
+              <i class="fa-solid fa-book-bookmark"></i>
+            </div>
+            <div class="stat-details">
+              <span class="stat-title">Roadmap Skripsi</span>
+              <h2 id="dash-skripsi-progress">0%</h2>
+              <span id="dash-skripsi-active" class="stat-sub text-success">Perencanaan topik...</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon icon-focus">
+              <i class="fa-solid fa-hourglass-half"></i>
+            </div>
+            <div class="stat-details">
+              <span class="stat-title">Waktu Fokus Belajar</span>
+              <h2 id="dash-focus-hours">0j 0m</h2>
+              <span id="dash-focus-sessions" class="stat-sub text-muted">0 Sesi Pomodoro</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Dashboard Middle Section -->
+        <div class="dashboard-mid-layout">
+          <!-- Left Column: Urgent tasks & semester completion status -->
+          <div class="glass-card flex-grow-1">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-triangle-exclamation text-error"></i> Tugas Mendesak (High Priority)</h3>
+            </div>
+            <ul id="dash-urgent-tasks" class="task-list-minimal mb-4">
+              <!-- Rendered programmatically -->
+            </ul>
+            
+            <div class="progress-bar-labeled">
+              <div class="d-flex justify-content-between">
+                <span>Penyelesaian Semester Berjalan</span>
+                <span id="task-completion-text" class="text-muted">0/0 Tugas Selesai (0%)</span>
+              </div>
+              <div class="progress-container">
+                <div id="task-completion-bar" class="progress-bar-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Right Column: Graduation Countdown Circular progress -->
+          <div class="glass-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-clock-rotate-left"></i> Target Wisuda &amp; Skripsi</h3>
+            </div>
+            <div class="graduation-countdown-wrapper">
+              <div class="countdown-circle">
+                <svg viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" class="bg-circle"></circle>
+                  <circle cx="50" cy="50" r="45" id="countdown-progress-bar" class="progress-circle" stroke-dasharray="282.7" stroke-dashoffset="282.7"></circle>
+                </svg>
+                <div class="countdown-text">
+                  <span id="countdown-days">0</span>
+                  <small>Hari Lagi</small>
+                </div>
+              </div>
+              <div class="countdown-info">
+                <h4 id="countdown-header">Menuju Kelulusan Impian</h4>
+                <p id="countdown-subtext" class="text-sm text-muted">Target wisuda kuliah 4 tahun tepat waktu.</p>
+                <div class="countdown-inputs">
+                  <input type="date" id="target-graduation-date" class="styled-input-dark">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Bottom: Dynamic Study Tips -->
+        <div class="glass-card tip-card mt-4">
+          <div class="tip-icon">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+          <div class="tip-content">
+            <h4>Pesan Mentor Akademik Semester 4</h4>
+            <p>Semester 4 adalah masa krusial mahasiswa ilmu komputer untuk memantapkan pemahaman basis data, rekayasa perangkat lunak, dan mulai menyusun fondasi penelitian riset. Gunakan modul "Roadmap Skripsi" untuk merancang abstrak topik Anda agar tidak tergesa-gesa di semester akhir!</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- ========================================== -->
+      <!-- TAB VIEW 2: TASKS & TODO AGENDAS -->
+      <!-- ========================================== -->
+      <div id="tab-tasks" class="tab-content">
+        <div class="tasks-layout-wrapper">
+          
+          <!-- Left Column Filter Sidebar -->
+          <aside class="tasks-filter-sidebar glass-card">
+            <h3><i class="fa-solid fa-filter"></i> Saring Agenda</h3>
+            
+            <div class="filter-group">
+              <label>Pencarian</label>
+              <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="task-search-input" placeholder="Cari agenda tugas...">
+              </div>
+            </div>
+            
+            <div class="filter-group">
+              <label>Status Tugas</label>
+              <div class="radio-pill-group">
+                <button class="filter-pill active" data-filter-status="all">Semua</button>
+                <button class="filter-pill" data-filter-status="pending">Aktif</button>
+                <button class="filter-pill" data-filter-status="completed">Selesai</button>
+              </div>
+            </div>
+            
+            <div class="filter-group">
+              <label>Mata Kuliah</label>
+              <select id="filter-course" class="styled-input-dark w-100">
+                <option value="all">Semua Mata Kuliah</option>
+              </select>
+            </div>
+            
+            <div class="filter-group">
+              <label>Prioritas</label>
+              <select id="filter-priority" class="styled-input-dark w-100">
+                <option value="all">Semua Prioritas</option>
+                <option value="High">Tinggi (High)</option>
+                <option value="Medium">Sedang (Medium)</option>
+                <option value="Low">Rendah (Low)</option>
+              </select>
+            </div>
+            
+            <div class="filter-group">
+              <label>Kategori</label>
+              <select id="filter-category" class="styled-input-dark w-100">
+                <option value="all">Semua Kategori</option>
+                <option value="Tugas">Tugas Kuliah</option>
+                <option value="Project">Proyek/Praktikum</option>
+                <option value="Ujian">Persiapan Ujian</option>
+                <option value="Skripsi">Riset/Skripsi</option>
+                <option value="Umum">Umum/Mandiri</option>
+              </select>
+            </div>
+          </aside>
+          
+          <!-- Right Column: Deck Control Bar & Main Task Container -->
+          <div class="flex-grow-1">
+            <div class="tasks-control-bar glass-card">
+              <div class="sorting-wrapper">
+                <span>Urutkan:</span>
+                <select id="task-sort" class="styled-select">
+                  <option value="dueDate-asc">Tenggat Terdekat</option>
+                  <option value="dueDate-desc">Tenggat Terjauh</option>
+                  <option value="priority-desc">Prioritas Tertinggi</option>
+                  <option value="created-desc">Tugas Baru Dibuat</option>
+                </select>
+              </div>
+              
+              <button class="btn btn-outline btn-sm" onclick="resetTaskFilters()">
+                <i class="fa-solid fa-arrows-rotate"></i> Reset Filter
+              </button>
+            </div>
+            
+            <!-- Tasks List Container -->
+            <div id="tasks-deck-container" class="tasks-deck">
+              <!-- Rendered programmatically -->
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- ========================================== -->
+      <!-- TAB VIEW 3: GPA & STUDY PLANNER -->
+      <!-- ========================================== -->
+      <div id="tab-gpa" class="tab-content">
+        <div class="gpa-tracker-layout">
+          
+          <!-- GPA Metrics Summary & Settings Row -->
+          <div class="gpa-summary-card glass-card">
+            <div class="gpa-summary-visual">
+              <div class="gpa-score">
+                <span id="gpa-projected-value" class="gpa-large-number">0.00</span>
+                <span class="gpa-label">Proyeksi IPK</span>
+              </div>
+              <div class="gpa-details-list">
+                <div class="gpa-detail-item">
+                  <span>Target IPS Semester:</span>
+                  <strong id="gpa-semester-target">0.00</strong>
+                </div>
+                <div class="gpa-detail-item">
+                  <span>Beban SKS Semester:</span>
+                  <strong id="gpa-semester-sks">0 SKS</strong>
+                </div>
+                <div class="gpa-detail-item">
+                  <span>Total SKS Terhitung:</span>
+                  <strong id="gpa-total-sks">0 SKS</strong>
+                </div>
+              </div>
+            </div>
+            
+            <div class="gpa-settings-form">
+              <h4>Konfigurasi Parameter Kelulusan</h4>
+              <div class="target-inputs-row">
+                <div class="input-unit">
+                  <label for="input-target-gpa">Target IPK Akhir</label>
+                  <input type="number" id="input-target-gpa" step="0.01" min="0" max="4.00" value="3.75" class="styled-input-dark">
+                </div>
+                <div class="input-unit">
+                  <label for="input-prev-gpa">IPK Kumulatif Lalu</label>
+                  <input type="number" id="input-prev-gpa" step="0.01" min="0" max="4.00" value="3.60" class="styled-input-dark">
+                </div>
+                <div class="input-unit">
+                  <label for="input-prev-sks">SKS Kumulatif Lalu</label>
+                  <input type="number" id="input-prev-sks" min="0" max="200" value="60" class="styled-input-dark">
+                </div>
+              </div>
+              <button id="btn-save-gpa-setup" class="btn btn-primary btn-sm mt-3 w-100">
+                <i class="fa-solid fa-calculator"></i> Terapkan &amp; Simulasikan
+              </button>
+            </div>
+          </div>
+          
+          <!-- Semester Study Plan & Courses Table Card -->
+          <div class="courses-planner-card glass-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-book-open"></i> Rencana Studi &amp; Matkul Semester <span id="courses-semester-title">4</span></h3>
+              <button id="btn-add-course" class="btn btn-outline btn-sm">
+                <i class="fa-solid fa-plus"></i> Tambah Matkul
+              </button>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="styled-table">
+                <thead>
+                  <tr>
+                    <th>Mata Kuliah</th>
+                    <th>Bobot SKS</th>
+                    <th>Target Nilai</th>
+                    <th>Nilai Riil</th>
+                    <th>Status Matkul</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="courses-table-body">
+                  <!-- Rendered programmatically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- ========================================== -->
+      <!-- TAB VIEW 4: SKRIPSI / THESIS ROADMAP -->
+      <!-- ========================================== -->
+      <div id="tab-skripsi" class="tab-content">
+        <div class="skripsi-planner-grid">
+          
+          <!-- Left Column: Chronological Roadmap Milestones -->
+          <div class="glass-card">
+            <div class="flex-header">
+              <h3><i class="fa-solid fa-road text-accent"></i> Roadmap Skripsi Jangka Panjang</h3>
+              
+              <!-- Circular Progress Display -->
+              <div class="d-flex align-items-center gap-2">
+                <div class="countdown-circle" style="width: 50px; height: 50px;">
+                  <svg viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" class="bg-circle" style="stroke-width:10;"></circle>
+                    <circle cx="50" cy="50" r="45" id="skripsi-progress-ring-fill" class="progress-circle" stroke-dasharray="100, 100" stroke-dashoffset="0" style="stroke-width:10; stroke:var(--accent-secondary);"></circle>
+                  </svg>
+                  <div class="countdown-text" style="font-size: 0.7rem;">
+                    <span id="skripsi-progress-ring-percent" style="font-size: 0.75rem; font-weight:800; font-family:var(--font-mono);">0%</span>
+                  </div>
+                </div>
+                <span class="text-sm font-semibold">Progres Riset</span>
+              </div>
+            </div>
+            
+            <!-- Thesis Title Metadata Form Section -->
+            <div class="thesis-metadata-section mb-4">
+              <div class="form-row-3">
+                <div class="form-group">
+                  <label for="thesis-title">Identitas Usulan Judul Skripsi</label>
+                  <input type="text" id="thesis-title" class="styled-input-dark" placeholder="Masukkan judul riset skripsi...">
+                </div>
+                <div class="form-group">
+                  <label for="thesis-supervisor-1">Dosen Pembimbing I</label>
+                  <input type="text" id="thesis-supervisor-1" class="styled-input-dark" placeholder="Nama Dosen Pembimbing I...">
+                </div>
+                <div class="form-group">
+                  <label for="thesis-supervisor-2">Dosen Pembimbing II</label>
+                  <input type="text" id="thesis-supervisor-2" class="styled-input-dark" placeholder="Nama Dosen Pembimbing II...">
+                </div>
+              </div>
+              <button id="btn-save-thesis-meta" class="btn btn-primary btn-sm mt-3 w-100">
+                <i class="fa-solid fa-floppy-disk"></i> Simpan Metadata Usulan Judul
+              </button>
+            </div>
+            
+            <!-- Milestones Chronological Timeline -->
+            <div id="skripsi-milestones-timeline" class="roadmap-timeline">
+              <!-- Rendered programmatically -->
+            </div>
+          </div>
+          
+          <!-- Right Column: Reference Manager Sidebar -->
+          <div class="glass-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-bookmark text-accent"></i> Referensi Riset &amp; Paper</h3>
+            </div>
+            
+            <!-- Add Reference Card -->
+            <div class="reference-adder mb-4">
+              <div class="form-group">
+                <label for="ref-title">Judul Paper / Jurnal</label>
+                <input type="text" id="ref-title" class="styled-input-dark w-100" placeholder="e.g. A Review of Deep Learning Applications">
+              </div>
+              <div class="form-group">
+                <label for="ref-url">Tautan / URL Paper</label>
+                <input type="url" id="ref-url" class="styled-input-dark w-100" placeholder="e.g. https://scholar.google.com/...">
+              </div>
+              <div class="form-group">
+                <label for="ref-notes">Catatan Penting</label>
+                <textarea id="ref-notes" class="styled-textarea-dark" rows="3" placeholder="Tulis rujukan penting untuk riset..."></textarea>
+              </div>
+              <button id="btn-add-ref" class="btn btn-outline btn-sm w-100 mt-2">
+                <i class="fa-solid fa-plus"></i> Simpan Referensi
+              </button>
+            </div>
+            
+            <!-- Reference Deck List -->
+            <div id="ref-list-container" class="reference-list-deck">
+              <!-- Rendered programmatically -->
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- ========================================== -->
+      <!-- TAB VIEW 5: POMODORO TIMER -->
+      <!-- ========================================== -->
+      <div id="tab-pomodoro" class="tab-content">
+        <div class="pomodoro-layout-wrapper">
+          
+          <!-- Left Column: Circular Timer Visual Card -->
+          <div class="glass-card pomodoro-timer-card">
+            
+            <!-- Mode Switchers -->
+            <div class="pomodoro-modes">
+              <button id="pomodoro-mode-work" class="btn-mode active" onclick="Pomodoro.setMode('work')">Focus (25m)</button>
+              <button id="pomodoro-mode-short" class="btn-mode" onclick="Pomodoro.setMode('short')">Istirahat (5m)</button>
+              <button id="pomodoro-mode-long" class="btn-mode" onclick="Pomodoro.setMode('long')">Istirahat Panjang (15m)</button>
+            </div>
+            
+            <!-- Circular Progress Display -->
+            <div class="timer-display-visual">
+              <div class="circular-timer-ring">
+                <svg viewBox="0 0 200 200">
+                  <circle cx="100" cy="100" r="90" class="timer-bg-circle"></circle>
+                  <circle cx="100" cy="100" r="90" id="timer-progress-fill" class="timer-fill-circle" stroke-dasharray="565.4" stroke-dashoffset="0"></circle>
+                </svg>
+                <div class="timer-values">
+                  <span id="timer-time-string" class="timer-time">25:00</span>
+                  <span id="timer-status-label" class="timer-status-text">WAKTUNYA FOKUS!</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="timer-actions">
+              <button id="btn-timer-start-pause" class="btn btn-primary btn-lg">
+                <i class="fa-solid fa-play"></i> Mulai
+              </button>
+              <button id="btn-timer-reset" class="btn btn-secondary btn-lg">
+                <i class="fa-solid fa-arrows-rotate"></i> Reset
+              </button>
+              <button id="btn-timer-skip" class="btn btn-outline btn-lg" title="Lewati Sesi">
+                <i class="fa-solid fa-forward-step"></i> Lewati
+              </button>
+            </div>
+            
+            <!-- Bind Session to active task -->
+            <div class="timer-task-binding">
+              <label for="pomodoro-task-select"><i class="fa-solid fa-link"></i> Hubungkan dengan Tugas Kuliah:</label>
+              <select id="pomodoro-task-select" class="styled-input-dark w-100 mt-2">
+                <option value="none">Belajar Umum / Mandiri (Tanpa Tugas Spesifik)</option>
+              </select>
+            </div>
+            
+          </div>
+          
+          <!-- Right Column: Focus Stats & Activity logs -->
+          <div class="glass-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-clock-rotate-left"></i> Log &amp; Statistik Fokus</h3>
+            </div>
+            
+            <!-- Quick stats grid -->
+            <div class="focus-stats-mini mb-4">
+              <div class="stat-row">
+                <span>Hari Ini</span>
+                <strong id="focus-stat-today">0 Sesi (0 Menit)</strong>
+              </div>
+              <div class="stat-row">
+                <span>Pekan Ini</span>
+                <strong id="focus-stat-week">0 Sesi (0 Menit)</strong>
+              </div>
+              <div class="stat-row">
+                <span>Rata-Rata</span>
+                <strong id="focus-stat-average">0 Sesi</strong>
+              </div>
+            </div>
+            
+            <h4>10 Sesi Belajar Terakhir</h4>
+            <div id="pomodoro-log-container" class="focus-history-list mt-3">
+              <!-- Rendered programmatically -->
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- ========================================== -->
+      <!-- TAB VIEW 6: STATISTICAL ANALYTICS -->
+      <!-- ========================================== -->
+      <div id="tab-analytics" class="tab-content">
+        <div class="analytics-layout-grid">
+          
+          <!-- Left Column: Custom charts bar distributions -->
+          <div class="glass-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-chart-column"></i> Ringkasan Analisis Distribusi Studi</h3>
+            </div>
+            
+            <div class="analytics-charts-grid">
+              
+              <!-- Chart 1: Course Load distribution -->
+              <div class="chart-box">
+                <h4>Distribusi Tugas Per Mata Kuliah</h4>
+                <div id="analytics-courses-chart" class="custom-bar-chart">
+                  <!-- Rendered programmatically -->
+                </div>
+              </div>
+              
+              <!-- Chart 2: Focus Hours distribution -->
+              <div class="chart-box">
+                <h4>Waktu Fokus Pomodoro Per Subjek</h4>
+                <div id="analytics-focus-chart" class="custom-bar-chart">
+                  <!-- Rendered programmatically -->
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          
+          <!-- Right Column: Academic Milestones Roadmap Steps -->
+          <div class="glass-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-graduation-cap"></i> Roadmap Kelulusan Akademik</h3>
+            </div>
+            
+            <div class="academic-milestones-track mt-3">
+              <div class="academic-timeline-step">
+                <div class="step-marker completed">1</div>
+                <div class="step-content">
+                  <h4>Semester 1-3: Adaptasi Awal</h4>
+                  <p class="text-sm text-muted">Masa perkuliahan dasar dan pengenalan ilmu komputer dasar.</p>
+                </div>
+              </div>
+              <div class="academic-timeline-step">
+                <div class="step-marker active">2</div>
+                <div class="step-content">
+                  <h4>Semester 4-5: Spesialisasi &amp; Topik</h4>
+                  <p class="text-sm text-muted">Pemrograman lanjut, basis data kompleks, dan penentuan topik skripsi riset awal.</p>
+                </div>
+              </div>
+              <div class="academic-timeline-step">
+                <div class="step-marker">3</div>
+                <div class="step-content">
+                  <h4>Semester 6: Proposal &amp; Sempro</h4>
+                  <p class="text-sm text-muted">Penyusunan proposal draf bab 1-3 dan ujian seminar proposal.</p>
+                </div>
+              </div>
+              <div class="academic-timeline-step">
+                <div class="step-marker">4</div>
+                <div class="step-content">
+                  <h4>Semester 7: Eksperimen &amp; Sistem</h4>
+                  <p class="text-sm text-muted">Pengembangan software, crawling data, dan implementasi sistem riset skripsi.</p>
+                </div>
+              </div>
+              <div class="academic-timeline-step">
+                <div class="step-marker">5</div>
+                <div class="step-content">
+                  <h4>Semester 8: Sidang Akhir &amp; Wisuda</h4>
+                  <p class="text-sm text-muted">Ujian sidang akhir mempertahankan skripsi di hadapan dewan penguji.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+      <!-- ========================================== -->
+      <!-- TAB VIEW 7: BACKUP & DATABASE CONFIGS -->
+      <!-- ========================================== -->
+      <div id="tab-settings" class="tab-content">
+        <div class="settings-layout-wrapper">
+          
+          <div class="glass-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-sliders"></i> Konfigurasi Portabilitas &amp; Aksesibilitas</h3>
+            </div>
+            
+            <div class="settings-options-list">
+              
+              <!-- Theme Selection Toggle -->
+              <div class="setting-row">
+                <div class="setting-label">
+                  <h4>Tema Tampilan (Dark Mode)</h4>
+                  <p class="text-sm text-muted">Gunakan mode gelap premium yang ramah mata saat belajar di malam hari.</p>
+                </div>
+                <div class="toggle-switch">
+                  <input type="checkbox" id="theme-toggle" checked>
+                  <label for="theme-toggle"></label>
+                </div>
+              </div>
+              
+              <!-- Web Audio notification Switch -->
+              <div class="setting-row">
+                <div class="setting-label">
+                  <h4>Efek Suara Notifikasi Synth</h4>
+                  <p class="text-sm text-muted">Aktifkan nada sinyal web audio yang menenangkan saat menyelesaikan tugas/pomodoro.</p>
+                </div>
+                <div class="toggle-switch">
+                  <input type="checkbox" id="sound-toggle" checked>
+                  <label for="sound-toggle"></label>
+                </div>
+              </div>
+              
+              <!-- Export/Import Database actions -->
+              <div class="setting-row flex-column align-items-start gap-3">
+                <div class="setting-label">
+                  <h4>Ekspor / Impor Data Akademik</h4>
+                  <p class="text-sm text-muted">Cadangkan database local-first Anda dalam bentuk file JSON terenkripsi untuk dipindahkan ke peranti lain.</p>
+                </div>
+                
+                <div class="backup-actions-row">
+                  <button id="btn-export-data" class="btn btn-secondary btn-sm">
+                    <i class="fa-solid fa-download"></i> Ekspor Backup (.json)
+                  </button>
+                  
+                  <label for="import-file-selector" class="btn btn-outline btn-sm mb-0 cursor-pointer">
+                    <i class="fa-solid fa-upload"></i> Impor Backup (.json)
+                  </label>
+                  <input type="file" id="import-file-selector" class="hidden" accept=".json">
+                </div>
+              </div>
+              
+              <!-- Security Alert Box -->
+              <div class="security-info-box">
+                <h4><i class="fa-solid fa-shield-halved"></i> Prinsip Keamanan &amp; Portabilitas Offline-First</h4>
+                <ul>
+                  <li>Data akademik disimpan secara penuh di dalam browser lokal Anda (LocalStorage) untuk performa instan tanpa server.</li>
+                  <li>Tidak ada API Key atau kredensial sensitif yang tersimpan keras (Hardcoded) dalam kode demi kepatuhan keamanan.</li>
+                  <li>Lakukan pencadangan (backup) berkala untuk mengamankan data perkuliahan jangka panjang Anda.</li>
+                </ul>
+              </div>
+              
+              <!-- Danger Zone Reset Database -->
+              <div class="setting-row flex-column align-items-start gap-2 border-top pt-4">
+                <div class="setting-label">
+                  <h4 class="text-error">Zona Berbahaya: Reset Database</h4>
+                  <p class="text-sm text-muted">Hapus seluruh data mata kuliah, agenda tugas, riwayat pomodoro, dan data skripsi secara permanen dari peranti ini.</p>
+                </div>
+                <button id="btn-reset-database" class="btn btn-danger btn-sm">
+                  <i class="fa-solid fa-trash-can"></i> Kosongkan Seluruh Database
+                </button>
+              </div>
+              
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      
+    </main>
+  </div>
+  
+  <!-- ========================================== -->
+  <!-- MODAL: ADD / EDIT TASK -->
+  <!-- ========================================== -->
+  <div id="task-modal" class="modal">
+    <div class="modal-content glass-card animate-slide-down">
+      <div class="modal-header">
+        <h3 id="task-modal-title">Tambah Tugas Baru</h3>
+        <button id="btn-close-task-modal" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <form id="task-form">
+        <!-- Hidden input for holding edit context -->
+        <input type="hidden" id="task-edit-id">
+        
+        <div class="form-group">
+          <label for="task-title">Judul Agenda Tugas / Proyek</label>
+          <input type="text" id="task-title" class="styled-input-dark w-100" required placeholder="Tuliskan nama tugas akademik...">
+        </div>
+        
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="task-course">Hubungkan dengan Matkul</label>
+            <select id="task-course" class="styled-input-dark w-100">
+              <option value="none">Tidak Terikat (Umum)</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="task-category">Kategori Tugas</label>
+            <select id="task-category" class="styled-input-dark w-100">
+              <option value="Tugas">Tugas Kuliah</option>
+              <option value="Project">Proyek/Praktikum</option>
+              <option value="Ujian">Persiapan Ujian</option>
+              <option value="Skripsi">Riset/Skripsi</option>
+              <option value="Umum">Umum/Mandiri</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="task-due-date">Tanggal Tenggat</label>
+            <input type="date" id="task-due-date" class="styled-input-dark w-100" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="task-priority">Prioritas Urgensi</label>
+            <select id="task-priority" class="styled-input-dark w-100">
+              <option value="High">Tinggi (High)</option>
+              <option value="Medium" selected>Sedang (Medium)</option>
+              <option value="Low">Rendah (Low)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="task-notes">Catatan &amp; Deskripsi Detail</label>
+          <textarea id="task-notes" class="styled-textarea-dark" rows="3" placeholder="Tambahkan tautan referensi LMS atau deskripsi instruksi tugas..."></textarea>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-task-modal" class="btn btn-secondary btn-sm">Batal</button>
+          <button type="submit" class="btn btn-primary btn-sm">Simpan Agenda</button>
+        </div>
+      </form>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
-  </body>
+  </div>
+  
+  <!-- ========================================== -->
+  <!-- MODAL: ADD / EDIT COURSE -->
+  <!-- ========================================== -->
+  <div id="course-modal" class="modal">
+    <div class="modal-content glass-card animate-slide-down">
+      <div class="modal-header">
+        <h3 id="course-modal-title">Tambah Mata Kuliah Baru</h3>
+        <button id="btn-close-course-modal" class="modal-close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <form id="course-form">
+        <!-- Hidden input for holding edit context -->
+        <input type="hidden" id="course-edit-id">
+        
+        <div class="form-group">
+          <label for="course-name">Nama Mata Kuliah</label>
+          <input type="text" id="course-name" class="styled-input-dark w-100" required placeholder="e.g. Analisis &amp; Desain Algoritma">
+        </div>
+        
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="course-sks">Bobot SKS</label>
+            <input type="number" id="course-sks" min="1" max="6" value="3" class="styled-input-dark w-100" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="course-target-grade">Target Nilai (Simulasi IPS)</label>
+            <select id="course-target-grade" class="styled-input-dark w-100">
+              <option value="A" selected>A (4.0)</option>
+              <option value="AB">AB (3.5)</option>
+              <option value="B">B (3.0)</option>
+              <option value="BC">BC (2.5)</option>
+              <option value="C">C (2.0)</option>
+              <option value="D">D (1.0)</option>
+              <option value="E">E (0.0)</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="course-real-grade">Nilai Riil Keluar (Pasca Ujian)</label>
+          <select id="course-real-grade" class="styled-input-dark w-100">
+            <option value="none" selected>Belum Keluar / Masih Berjalan</option>
+            <option value="A">A (4.0)</option>
+            <option value="AB">AB (3.5)</option>
+            <option value="B">B (3.0)</option>
+            <option value="BC">BC (2.5)</option>
+            <option value="C">C (2.0)</option>
+            <option value="D">D (1.0)</option>
+            <option value="E">E (0.0)</option>
+          </select>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" id="btn-cancel-course-modal" class="btn btn-secondary btn-sm">Batal</button>
+          <button type="submit" class="btn btn-primary btn-sm">Simpan Matkul</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Main Application Script Bundle -->
+  <script src="app.js"></script>
+</body>
 </html>
