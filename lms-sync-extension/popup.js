@@ -187,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
  * ==========================================================================
  */
 function smartHeuristicLmsScraper() {
+  const extracted = [];
   const today = new Date();
   const pastThreshold = new Date();
   pastThreshold.setDate(pastThreshold.getDate() - 7); // Allow up to 7 days in the past to avoid strict timezone cutoff
@@ -272,12 +273,71 @@ function smartHeuristicLmsScraper() {
     return null;
   }
 
+  // Scraper Action: Special parser for Assignment Detail Pages
+  if (window.location.href.includes("/assignment/")) {
+    let pageTitle = "";
+    const headingEl = document.querySelector("h1, h2, h3, .course-header, [class*='title'], [class*='header']");
+    if (headingEl) {
+      pageTitle = headingEl.innerText.trim();
+    }
+    if (!pageTitle || pageTitle.toLowerCase() === "assignment") {
+      pageTitle = document.title.split("-")[0].trim();
+    }
+    
+    let parsedDate = null;
+    const allElements = document.querySelectorAll("td, th, p, span, li, div, .submissionstatustable td");
+    for (let el of allElements) {
+      const text = el.innerText || "";
+      if (text.length > 5 && text.length < 150) {
+        if (/(due|batas|tenggat|deadline|akhir|sisa|pengumpulan|waktu)/i.test(text)) {
+          const date = extractDueDate(text);
+          if (date && date >= pastThreshold) {
+            parsedDate = date;
+            break;
+          }
+        }
+      }
+    }
+    
+    if (!parsedDate) {
+      for (let el of allElements) {
+        const date = extractDueDate(el.innerText || "");
+        if (date && date >= pastThreshold) {
+          parsedDate = date;
+          break;
+        }
+      }
+    }
+    
+    if (!parsedDate) {
+      parsedDate = new Date();
+      parsedDate.setDate(parsedDate.getDate() + 3);
+    }
+    
+    let courseName = "LMS Tugas";
+    const courseBreadcrumb = document.querySelector(".breadcrumb, [class*='breadcrumb'], .course-header");
+    const titleToParse = courseBreadcrumb ? courseBreadcrumb.innerText + " " + pageTitle : pageTitle;
+    const courseMatch = titleToParse.match(/([0-9A-Za-z\s]{3,30})/);
+    if (courseMatch) {
+      courseName = courseMatch[1].split("#")[0].trim();
+      courseName = courseName.replace(/(assignment|tugas|dashboard|courses|home|detail)/gi, "").trim();
+    }
+    if (!courseName) courseName = "Basis Data";
+    
+    extracted.push({
+      title: cleanTitle(pageTitle),
+      dueDate: formatDateString(parsedDate),
+      courseName: courseName,
+      notes: "Di-scrape otomatis dari halaman detail tugas: " + window.location.href
+    });
+  }
+
   // Scraper Action: Search in Tables (Common structure in campus portals)
   const rows = document.querySelectorAll("tr");
   rows.forEach(row => {
     const text = row.innerText || "";
     // Check if row has signs of a deadline/task and a date
-    const hasTaskKeyword = /(tugas|kuis|quiz|assignment|praktikum|proyek|project|uts|uas|deadlines)/i.test(text);
+    const hasTaskKeyword = /(tugas|kuis|quiz|assignment|praktikum|proyek|project|uts|uas|deadlines|due|batas|sisa|time|remaining|pengumpulan|upload|kirim|tenggat|status)/i.test(text);
     if (hasTaskKeyword) {
       const tds = Array.from(row.querySelectorAll("td"));
       if (tds.length >= 2) {
